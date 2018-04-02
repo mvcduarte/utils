@@ -8,7 +8,7 @@ def model(x, f):
 
     sigma = pymc.Uniform('sigma', 0.01, 5.0, value=1.0)
     mu = pymc.Uniform('mu', -1.0, 1.0, value= 0.0)
-    A = pymc.Uniform('A', 0.0, 3.0, value= 1.0)
+    A = pymc.Uniform('A', 0.0, 5.0, value= 1.0)
 
     # Model (gauss)
 
@@ -48,12 +48,13 @@ if __name__ == "__main__":
     # Run PYMC...
 
     MDL = pymc.MCMC(model(x0, f_error))
-    MDL.sample(3e4)
+    MDL.sample(2e4)
 
-    print 'Fitted parameters:'
-    print 'mu=', MDL.mu.stats()['mean']
-    print 'sigma=', MDL.sigma.stats()['mean']
-    print 'A=', MDL.A.stats()['mean']
+    print 'Fitted parameters (2sigma c.l.s):'
+    print 
+    print 'mu=', MDL.mu.stats()['quantiles'][2.5], MDL.mu.stats()['mean'], MDL.mu.stats()['quantiles'][97.5]
+    print 'sigma=', MDL.sigma.stats()['quantiles'][2.5], MDL.sigma.stats()['mean'], MDL.sigma.stats()['quantiles'][97.5]
+    print 'A=', MDL.A.stats()['quantiles'][2.5], MDL.A.stats()['mean'], MDL.A.stats()['quantiles'][97.5]
 
     # Plotting the fitted data
 
@@ -66,5 +67,5 @@ if __name__ == "__main__":
     plt.xlabel('x')
     plt.ylabel('N')
     plt.show()
-    
+
     exit()
