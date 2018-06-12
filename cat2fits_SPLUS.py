@@ -11,21 +11,23 @@ from __future__ import print_function
 from astropy.io import fits, ascii
 import numpy as np
 import sys
-
-# Input file (ASCII)
-infile_cat = str(sys.argv[1]) #'SPLUS_STRIPE82-0003_photo_BPZ.cat'
-
-# Output file (FITS)
-outfile_fits = infile_cat.replace('.cat', '.fits')
+import glob
 
 if __name__ == '__main__':
-	
-    # Loading ASCII catalogue
-    
-    print("Loading...%s" % infile_cat)
-    data = ascii.read(infile_cat)
 
-    # Saving FITS file
+    list_cat = glob.glob('SPLUS_STRIPE82-000*.cat')
 
-    print("Saving...%s" % outfile_fits)
-    data.write(outfile_fits, format = 'fits', overwrite = True)
+    for i in range(len(list_cat)):
+
+        # Output file (FITS)
+        outfile_fits = list_cat[i].replace('.cat', '.fits')
+    	
+        # Loading ASCII catalogue
+        
+        print("Loading...%s" % list_cat[i])
+        data = ascii.read(list_cat[i])
+
+        # Saving FITS file
+
+        print("Saving...%s" % outfile_fits)
+        data.write(outfile_fits, format = 'fits', overwrite = True)
